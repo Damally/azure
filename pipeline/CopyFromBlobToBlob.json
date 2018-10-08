@@ -1,0 +1,41 @@
+{
+	"name": "CopyFromBlobToBlob",
+	"properties": {
+		"activities": [
+			{
+				"name": "CopyFromBlob2Blob",
+				"type": "Copy",
+				"policy": {
+					"timeout": "7.00:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"typeProperties": {
+					"source": {
+						"type": "BlobSource",
+						"recursive": true
+					},
+					"sink": {
+						"type": "BlobSink"
+					},
+					"enableStaging": false,
+					"dataIntegrationUnits": 0
+				},
+				"inputs": [
+					{
+						"referenceName": "InputDataSetFromBlob",
+						"type": "DatasetReference"
+					}
+				],
+				"outputs": [
+					{
+						"referenceName": "OutputDSFromBlob",
+						"type": "DatasetReference"
+					}
+				]
+			}
+		]
+	}
+}
