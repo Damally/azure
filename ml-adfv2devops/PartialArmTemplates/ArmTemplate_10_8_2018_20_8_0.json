@@ -6,26 +6,6 @@
 			"type": "string",
 			"metadata": "Data Factory Name",
 			"defaultValue": "ml-adfv2devops"
-		},
-		"mlblobstorage_connectionString": {
-			"type": "secureString",
-			"metadata": "Secure string for 'connectionString' of 'mlblobstorage'"
-		},
-		"InputDataSetFromBlob_properties_typeProperties_fileName": {
-			"type": "string",
-			"defaultValue": "Health demo.csv"
-		},
-		"InputDataSetFromBlob_properties_typeProperties_folderPath": {
-			"type": "string",
-			"defaultValue": "adf"
-		},
-		"OutputDSFromBlob_properties_typeProperties_fileName": {
-			"type": "string",
-			"defaultValue": ""
-		},
-		"OutputDSFromBlob_properties_typeProperties_folderPath": {
-			"type": "string",
-			"defaultValue": "adf/output"
 		}
 	},
 	"variables": {
@@ -41,7 +21,6 @@
 					{
 						"name": "CopyFromBlob2Blob",
 						"type": "Copy",
-						"dependsOn": [],
 						"policy": {
 							"timeout": "7.00:00:00",
 							"retry": 0,
@@ -49,7 +28,6 @@
 							"secureOutput": false,
 							"secureInput": false
 						},
-						"userProperties": [],
 						"typeProperties": {
 							"source": {
 								"type": "BlobSource",
@@ -64,20 +42,17 @@
 						"inputs": [
 							{
 								"referenceName": "InputDataSetFromBlob",
-								"type": "DatasetReference",
-								"parameters": {}
+								"type": "DatasetReference"
 							}
 						],
 						"outputs": [
 							{
 								"referenceName": "OutputDSFromBlob",
-								"type": "DatasetReference",
-								"parameters": {}
+								"type": "DatasetReference"
 							}
 						]
 					}
-				],
-				"annotations": []
+				]
 			},
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/datasets/InputDataSetFromBlob')]",
@@ -94,7 +69,6 @@
 					"referenceName": "mlblobstorage",
 					"type": "LinkedServiceReference"
 				},
-				"annotations": [],
 				"type": "AzureBlob",
 				"typeProperties": {
 					"format": {
@@ -106,13 +80,10 @@
 						"skipLineCount": 0,
 						"firstRowAsHeader": false
 					},
-					"fileName": "[parameters('InputDataSetFromBlob_properties_typeProperties_fileName')]",
-					"folderPath": "[parameters('InputDataSetFromBlob_properties_typeProperties_folderPath')]"
+					"fileName": "Health demo.csv",
+					"folderPath": "adf"
 				}
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/linkedServices/mlblobstorage')]"
-			]
+			}
 		},
 		{
 			"name": "[concat(parameters('factoryName'), '/OutputDSFromBlob')]",
@@ -124,7 +95,6 @@
 					"referenceName": "mlblobstorage",
 					"type": "LinkedServiceReference"
 				},
-				"annotations": [],
 				"type": "AzureBlob",
 				"typeProperties": {
 					"format": {
@@ -136,27 +106,10 @@
 						"skipLineCount": 0,
 						"firstRowAsHeader": false
 					},
-					"fileName": "[parameters('OutputDSFromBlob_properties_typeProperties_fileName')]",
-					"folderPath": "[parameters('OutputDSFromBlob_properties_typeProperties_folderPath')]"
+					"fileName": "",
+					"folderPath": "adf/output"
 				}
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/linkedServices/mlblobstorage')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/mlblobstorage')]",
-			"type": "Microsoft.DataFactory/factories/linkedServices",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"description": "My blob storage in AUSE ",
-				"annotations": [],
-				"type": "AzureBlobStorage",
-				"typeProperties": {
-					"connectionString": "[parameters('mlblobstorage_connectionString')]"
-				}
-			},
-			"dependsOn": []
+			}
 		}
 	]
 }
