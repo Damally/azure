@@ -17,12 +17,21 @@
 						"type": "FileSystemSource",
 						"recursive": true
 					},
+					"sink": {
+						"type": "BlobSink"
+					},
 					"enableStaging": false,
 					"dataIntegrationUnits": 0
 				},
 				"inputs": [
 					{
 						"referenceName": "AmazonS3Object1",
+						"type": "DatasetReference"
+					}
+				],
+				"outputs": [
+					{
+						"referenceName": "DatasetBlob",
 						"type": "DatasetReference"
 					}
 				]
