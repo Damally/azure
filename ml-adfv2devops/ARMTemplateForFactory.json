@@ -7,9 +7,21 @@
 			"metadata": "Data Factory Name",
 			"defaultValue": "ml-adfv2devops"
 		},
+		"AmazonS3_secretAccessKey": {
+			"type": "secureString",
+			"metadata": "Secure string for 'secretAccessKey' of 'AmazonS3'"
+		},
 		"mlblobstorage_connectionString": {
 			"type": "secureString",
 			"metadata": "Secure string for 'connectionString' of 'mlblobstorage'"
+		},
+		"DatasetBlob_properties_typeProperties_fileName": {
+			"type": "string",
+			"defaultValue": ""
+		},
+		"DatasetBlob_properties_typeProperties_folderPath": {
+			"type": "string",
+			"defaultValue": "adf/output"
 		},
 		"InputDataSetFromBlob_properties_typeProperties_fileName": {
 			"type": "string",
@@ -26,6 +38,10 @@
 		"OutputDSFromBlob_properties_typeProperties_folderPath": {
 			"type": "string",
 			"defaultValue": "adf/output"
+		},
+		"AmazonS3_properties_typeProperties_accessKeyId": {
+			"type": "string",
+			"defaultValue": "AKIAJJTURXRSM3RBY2OA"
 		}
 	},
 	"variables": {
@@ -33,7 +49,7 @@
 	},
 	"resources": [
 		{
-			"name": "[concat(parameters('factoryName'), '/CopyFromBlobToBlob')]",
+			"name": "[concat(parameters('factoryName'), '/CopyBlob2Blob')]",
 			"type": "Microsoft.DataFactory/factories/pipelines",
 			"apiVersion": "2018-06-01",
 			"properties": {
@@ -82,6 +98,108 @@
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/datasets/InputDataSetFromBlob')]",
 				"[concat(variables('factoryId'), '/datasets/OutputDSFromBlob')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/CopyS3toBlob')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "CopyS3toBlob",
+						"type": "Copy",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "7.00:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "FileSystemSource",
+								"recursive": true
+							},
+							"sink": {
+								"type": "BlobSink"
+							},
+							"enableStaging": false,
+							"dataIntegrationUnits": 0
+						},
+						"inputs": [
+							{
+								"referenceName": "AmazonS3Object1",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						],
+						"outputs": [
+							{
+								"referenceName": "DatasetBlob",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						]
+					}
+				],
+				"annotations": []
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/datasets/AmazonS3Object1')]",
+				"[concat(variables('factoryId'), '/datasets/DatasetBlob')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/AmazonS3Object1')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "AmazonS3",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "AmazonS3Object",
+				"typeProperties": {
+					"key": "MASTER.txt",
+					"prefix": "",
+					"bucketName": "adflab"
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/AmazonS3')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/DatasetBlob')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "mlblobstorage",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "AzureBlob",
+				"typeProperties": {
+					"format": {
+						"type": "TextFormat",
+						"columnDelimiter": ",",
+						"rowDelimiter": "",
+						"nullValue": "\\N",
+						"treatEmptyAsNull": true,
+						"skipLineCount": 0,
+						"firstRowAsHeader": false
+					},
+					"fileName": "[parameters('DatasetBlob_properties_typeProperties_fileName')]",
+					"folderPath": "[parameters('DatasetBlob_properties_typeProperties_folderPath')]"
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/mlblobstorage')]"
 			]
 		},
 		{
@@ -143,6 +261,24 @@
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/linkedServices/mlblobstorage')]"
 			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/AmazonS3')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"description": "Copy from AWS S3",
+				"annotations": [],
+				"type": "AmazonS3",
+				"typeProperties": {
+					"accessKeyId": "[parameters('AmazonS3_properties_typeProperties_accessKeyId')]",
+					"secretAccessKey": {
+						"type": "SecureString",
+						"value": "[parameters('AmazonS3_secretAccessKey')]"
+					}
+				}
+			},
+			"dependsOn": []
 		},
 		{
 			"name": "[concat(parameters('factoryName'), '/mlblobstorage')]",

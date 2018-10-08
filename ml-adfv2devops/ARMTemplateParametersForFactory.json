@@ -5,8 +5,17 @@
 		"factoryName": {
 			"value": "ml-adfv2devops"
 		},
+		"AmazonS3_secretAccessKey": {
+			"value": ""
+		},
 		"mlblobstorage_connectionString": {
 			"value": ""
+		},
+		"DatasetBlob_properties_typeProperties_fileName": {
+			"value": ""
+		},
+		"DatasetBlob_properties_typeProperties_folderPath": {
+			"value": "adf/output"
 		},
 		"InputDataSetFromBlob_properties_typeProperties_fileName": {
 			"value": "Health demo.csv"
@@ -19,6 +28,9 @@
 		},
 		"OutputDSFromBlob_properties_typeProperties_folderPath": {
 			"value": "adf/output"
+		},
+		"AmazonS3_properties_typeProperties_accessKeyId": {
+			"value": "AKIAJJTURXRSM3RBY2OA"
 		}
 	}
 }
