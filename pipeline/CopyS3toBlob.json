@@ -1,9 +1,9 @@
 {
-	"name": "CopyBlob2Blob",
+	"name": "CopyS3toBlob",
 	"properties": {
 		"activities": [
 			{
-				"name": "CopyFromBlob2Blob",
+				"name": "CopyS3toBlob",
 				"type": "Copy",
 				"policy": {
 					"timeout": "7.00:00:00",
@@ -14,24 +14,15 @@
 				},
 				"typeProperties": {
 					"source": {
-						"type": "BlobSource",
+						"type": "FileSystemSource",
 						"recursive": true
-					},
-					"sink": {
-						"type": "BlobSink"
 					},
 					"enableStaging": false,
 					"dataIntegrationUnits": 0
 				},
 				"inputs": [
 					{
-						"referenceName": "InputDataSetFromBlob",
-						"type": "DatasetReference"
-					}
-				],
-				"outputs": [
-					{
-						"referenceName": "OutputDSFromBlob",
+						"referenceName": "AmazonS3Object1",
 						"type": "DatasetReference"
 					}
 				]

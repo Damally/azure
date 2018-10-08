@@ -1,0 +1,15 @@
+{
+	"name": "AmazonS3Object1",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "AmazonS3",
+			"type": "LinkedServiceReference"
+		},
+		"type": "AmazonS3Object",
+		"typeProperties": {
+			"key": "MASTER.txt",
+			"prefix": "",
+			"bucketName": "adflab"
+		}
+	}
+}
