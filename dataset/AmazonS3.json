@@ -1,5 +1,5 @@
 {
-	"name": "AmazonS3Object1",
+	"name": "AmazonS3",
 	"properties": {
 		"linkedServiceName": {
 			"referenceName": "AmazonS3",
