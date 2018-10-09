@@ -1,0 +1,6 @@
+{
+	"name": "OnPremSQL2017",
+	"properties": {
+		"type": "SqlServerTable"
+	}
+}
