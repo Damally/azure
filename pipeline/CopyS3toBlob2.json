@@ -1,5 +1,5 @@
 {
-	"name": "CopyS3toBlob",
+	"name": "CopyS3toBlob2",
 	"properties": {
 		"activities": [
 			{
