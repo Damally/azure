@@ -1,5 +1,5 @@
 {
-	"name": "pipeline1",
+	"name": "DatabricksNotebook",
 	"properties": {
 		"activities": [
 			{
@@ -15,7 +15,10 @@
 				"typeProperties": {
 					"notebookPath": "/Users/mary.law@outlook.com.au/ADF Notebook",
 					"baseParameters": {
-						"input": "@pipeline().parameters.name"
+						"input": {
+							"value": "@pipeline().parameters.name",
+							"type": "Expression"
+						}
 					}
 				},
 				"linkedServiceName": {
