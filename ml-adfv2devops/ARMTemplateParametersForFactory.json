@@ -8,6 +8,9 @@
 		"AmazonS3_secretAccessKey": {
 			"value": ""
 		},
+		"AzureDatabricks_LS_accessToken": {
+			"value": ""
+		},
 		"mlblobstorage_connectionString": {
 			"value": ""
 		},
