@@ -157,7 +157,7 @@
 			]
 		},
 		{
-			"name": "[concat(parameters('factoryName'), '/AzureDatab')]",
+			"name": "[concat(parameters('factoryName'), '/DatabricksNotebook')]",
 			"type": "Microsoft.DataFactory/factories/pipelines",
 			"apiVersion": "2018-06-01",
 			"properties": {
